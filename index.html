@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prestige Suwanee Lobby Display</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1a2744;
+    --navy-2:#233256;
+    --burgundy:#7a1a2e;
+    --gold:#b8863b;
+    --gold-light:#e6c789;
+    --paper:#f7f5f0;
+    --ink:#1a2744;
+    --muted:#6b7385;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{
+    height:100%;
+    background:#000;
+    font-family:'Noto Sans KR','Poppins',sans-serif;
+    overflow:hidden;
+  }
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink);
+  }
+  #stage{
+    width:1920px;
+    height:1080px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    background:var(--navy);
+    transform-origin:center center;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 44px;
+    background:linear-gradient(180deg,var(--burgundy) 0%, #55111f 100%);
+    border-bottom:4px solid var(--gold);
+    z-index:5;
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+  }
+  .brand .mark{
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+    font-size:30px;
+    letter-spacing:0.5px;
+    color:#fff;
+  }
+  .brand .mark span{ color:var(--gold-light); }
+  .brand .sub{
+    font-size:15px;
+    color:var(--gold-light);
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+  }
+  .clock{
+    text-align:right;
+    color:#fff;
+  }
+  .clock .time{
+    font-family:'Poppins',sans-serif;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:1px;
+    line-height:1;
+  }
+  .clock .date{
+    margin-top:4px;
+    font-size:16px;
+    font-weight:500;
+    color:var(--gold-light);
+  }
+
+  /* ---------- SLIDES ---------- */
+  main{
+    flex:1 1 auto;
+    position:relative;
+    background:var(--paper);
+    overflow:hidden;
+  }
+  .slide{
+    position:absolute;
+    inset:0;
+    padding:48px 64px;
+    display:flex;
+    flex-direction:column;
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .6s ease, transform .6s ease;
+    pointer-events:none;
+  }
+  .slide.active{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .slide-title{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:28px;
+  }
+  .slide-title .tag{
+    background:var(--burgundy);
+    color:#fff;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:1.5px;
+    padding:7px 16px;
+    border-radius:999px;
+    text-transform:uppercase;
+  }
+  .slide-title h1{
+    font-size:34px;
+    font-weight:900;
+    color:var(--navy);
+  }
+  .slide-title .accent{
+    flex:1;
+    height:3px;
+    background:linear-gradient(90deg,var(--gold),transparent);
+    border-radius:3px;
+  }
+
+  /* ---- Vocab Slide (month list) ---- */
+  .vocab-wrap{
+    flex:1;
+    display:flex;
+    min-height:0;
+  }
+  .vocab-card{
+    background:#fff;
+    border-radius:24px;
+    box-shadow:0 20px 60px rgba(26,39,68,0.15);
+    padding:36px 56px;
+    border-top:10px solid var(--gold);
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  .vocab-card .label{
+    font-size:20px;
+    font-weight:700;
+    color:var(--muted);
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .vocab-list{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:9px;
+    overflow:auto;
+  }
+  .vocab-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 22px;
+    border-radius:12px;
+    background:var(--paper);
+    border-left:6px solid var(--gold);
+  }
+  .vocab-row .range{
+    font-family:'Poppins',sans-serif;
+    font-size:22px;
+    font-weight:800;
+    color:var(--navy);
+  }
+  .vocab-row .right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .vocab-row .badge{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+    background:var(--burgundy);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:999px;
+    text-transform:uppercase;
+  }
+  .vocab-row .page{
+    font-size:18px;
+    font-weight:800;
+    color:var(--burgundy);
+    background:#fff;
+    border:2px solid var(--burgundy);
+    padding:5px 18px;
+    border-radius:10px;
+  }
+  .vocab-row.current{
+    background:linear-gradient(135deg,var(--navy),var(--navy-2));
+    border-left-color:var(--gold);
+  }
+  .vocab-row.current .range{ color:#fff; }
+  .vocab-row.current .page{
+    background:var(--gold);
+    color:var(--navy);
+    border-color:var(--gold);
+  }
+
+  /* ---- Room Slide (custom floor plan) ---- */
+  .room-wrap{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    min-height:0;
+  }
+  .room-row{
+    display:grid;
+    gap:16px;
+    flex:1;
+    min-height:0;
+  }
+  .room-row.top{ grid-template-columns:repeat(5,1fr); }
+  .room-row.bottom{ grid-template-columns:1.2fr 1fr 1fr 1fr; }
+  .room-box{
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 10px 30px rgba(26,39,68,0.1);
+    border-top:8px solid var(--gold);
+    padding:16px 14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:8px;
+    min-height:0;
+  }
+  .room-box .num{
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+    font-size:26px;
+    color:var(--navy);
+    background:var(--paper);
+    width:40px;height:40px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .room-box .cls{
+    font-size:14px;
+    font-weight:700;
+    color:var(--burgundy);
+    line-height:1.35;
+  }
+  .room-box .teacher{
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted);
+  }
+  .room-box .note{
+    font-size:11px;
+    color:var(--gold);
+    font-weight:700;
+    letter-spacing:.5px;
+  }
+  .room-box.open, .room-box.office{
+    border-top-color:#c7cdd6;
+  }
+  .room-box.open .cls, .room-box.office .cls{ color:#9aa2b1; font-weight:600; }
+  .room-box.front{
+    background:linear-gradient(135deg,var(--navy),var(--navy-2));
+    border-top-color:var(--gold);
+    color:#fff;
+  }
+  .room-box.front .num{
+    background:var(--gold);
+    color:var(--navy);
+    width:auto;height:auto;
+    border-radius:10px;
+    padding:6px 14px;
+    font-size:16px;
+  }
+  .room-box.front .cls{ color:var(--gold-light); font-size:13px; font-weight:600; }
+
+  /* ---- Schedule Slide ---- */
+  .sched-grid{
+    flex:1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    min-height:0;
+  }
+  .sched-col{
+    background:#fff;
+    border-radius:20px;
+    box-shadow:0 14px 40px rgba(26,39,68,0.1);
+    padding:28px 32px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .sched-col h2{
+    font-size:22px;
+    color:var(--navy);
+    font-weight:800;
+    padding-bottom:14px;
+    margin-bottom:14px;
+    border-bottom:3px solid var(--gold);
+  }
+  .sched-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    overflow:auto;
+  }
+  .sched-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    background:var(--paper);
+    border-left:6px solid var(--burgundy);
+    border-radius:10px;
+    padding:14px 18px;
+  }
+  .sched-item .name{
+    font-weight:700;
+    font-size:18px;
+    color:var(--navy);
+  }
+  .sched-item .teacher{
+    font-size:14px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .sched-item .time{
+    font-size:14px;
+    font-weight:700;
+    color:var(--burgundy);
+    white-space:nowrap;
+  }
+
+  /* ---- SAT Countdown Slide ---- */
+  .sat-wrap{
+    flex:1;
+    display:flex;
+    gap:36px;
+    align-items:center;
+    justify-content:center;
+  }
+  .sat-main{
+    background:linear-gradient(135deg,var(--navy),var(--navy-2));
+    color:#fff;
+    border-radius:28px;
+    padding:60px 80px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(26,39,68,0.25);
+  }
+  .sat-main .eyebrow{
+    font-size:18px;
+    letter-spacing:3px;
+    color:var(--gold-light);
+    font-weight:700;
+    text-transform:uppercase;
+  }
+  .sat-main .dday{
+    font-family:'Poppins',sans-serif;
+    font-size:110px;
+    font-weight:800;
+    margin:14px 0;
+    color:#fff;
+  }
+  .sat-main .dday span{ color:var(--gold-light); }
+  .sat-main .fulldate{
+    font-size:26px;
+    font-weight:600;
+  }
+  .sat-next{
+    background:#fff;
+    border-radius:20px;
+    padding:30px 34px;
+    box-shadow:0 14px 40px rgba(26,39,68,0.1);
+    min-width:280px;
+  }
+  .sat-next h3{
+    font-size:16px;
+    color:var(--muted);
+    letter-spacing:1px;
+    margin-bottom:16px;
+    text-transform:uppercase;
+  }
+  .sat-next li{
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+    font-weight:600;
+    color:var(--navy);
+  }
+  .sat-next li:last-child{border-bottom:none;}
+
+  /* ---- Dots ---- */
+  .dots{
+    flex:0 0 auto;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    padding:16px 0;
+    background:linear-gradient(0deg,var(--burgundy) 0%, #55111f 100%);
+    border-top:4px solid var(--gold);
+  }
+  .dot{
+    width:10px;height:10px;border-radius:50%;
+    background:rgba(255,255,255,0.25);
+    transition:background .3s ease, transform .3s ease;
+  }
+  .dot.active{
+    background:var(--gold);
+    transform:scale(1.3);
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<header>
+  <div class="brand">
+    <div class="mark">PRESTIGE <span>SUWANEE</span></div>
+  </div>
+  <div class="clock">
+    <div class="time" id="clockTime">--:--:--</div>
+    <div class="date" id="clockDate">--- --, ----</div>
+  </div>
+</header>
+
+<main>
+  <!-- Slide 1: Vocab -->
+  <section class="slide" data-slide="0">
+    <div class="slide-title">
+      <span class="tag">Vocab</span>
+      <h1 id="vocabTitle">Monthly Vocabulary</h1>
+      <div class="accent"></div>
+    </div>
+    <div class="vocab-wrap">
+      <div class="vocab-card">
+        <div class="label" id="vocabMonthLabel">This Month's Vocab Schedule</div>
+        <div class="vocab-list" id="vocabList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 2: Room Availability -->
+  <section class="slide" data-slide="1">
+    <div class="slide-title">
+      <span class="tag">Rooms</span>
+      <h1>Room Availability</h1>
+      <div class="accent"></div>
+    </div>
+    <div class="room-wrap">
+      <div class="room-row top">
+        <div class="room-box">
+          <div class="num">1</div>
+          <div class="cls">SAT CON (Weekend)<br>Study Room</div>
+        </div>
+        <div class="room-box">
+          <div class="num">2</div>
+          <div class="cls">SAT CON (Weekday)<br>SAT ADV (Weekend)</div>
+          <div class="teacher">David T</div>
+          <div class="note">AP Calc</div>
+        </div>
+        <div class="room-box">
+          <div class="num">3</div>
+          <div class="cls">AP Chem<br>AP Physics</div>
+          <div class="teacher">Harry T</div>
+        </div>
+        <div class="room-box">
+          <div class="num">4</div>
+          <div class="cls">Tutor Room</div>
+          <div class="teacher">Erin T, JeYeong T</div>
+        </div>
+        <div class="room-box">
+          <div class="num">5</div>
+          <div class="cls">SAT ADV (Weekday)<br>SAT ADV 1 (Weekend)</div>
+        </div>
+      </div>
+      <div class="room-row bottom">
+        <div class="room-box front">
+          <div class="num">FRONT</div>
+          <div class="cls">Entrance &amp; Front Desk</div>
+        </div>
+        <div class="room-box office">
+          <div class="num">0</div>
+          <div class="cls">Office</div>
+        </div>
+        <div class="room-box">
+          <div class="num">6</div>
+          <div class="teacher">Jason T</div>
+        </div>
+        <div class="room-box office">
+          <div class="num">7</div>
+          <div class="cls">Office</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 3: Program Schedule (SAT + AP combined) -->
+  <section class="slide" data-slide="2">
+    <div class="slide-title">
+      <span class="tag">Schedule</span>
+      <h1>Program Schedule</h1>
+      <div class="accent"></div>
+    </div>
+    <div class="sched-grid">
+      <div class="sched-col">
+        <h2>Weekend · Saturday</h2>
+        <div class="sched-list">
+          <div class="sched-item">
+            <div class="name">SAT Concept + Advanced</div>
+            <div class="time">8:30 AM – 1:15 PM</div>
+          </div>
+          <div class="sched-item">
+            <div class="name">SAT Advanced</div>
+            <div class="time">8:30 AM – 1:15 PM</div>
+          </div>
+          <div class="sched-item">
+            <div class="name">AP Calculus AB</div>
+            <div class="time">1:15 – 3:15 PM</div>
+          </div>
+        </div>
+      </div>
+      <div class="sched-col">
+        <h2>Weekday · Wed &amp; Fri</h2>
+        <div class="sched-list">
+          <div class="sched-item">
+            <div class="name">SAT Concept + Advanced</div>
+            <div class="time">5:00 PM – 7:15 PM</div>
+          </div>
+          <div class="sched-item">
+            <div class="name">SAT Advanced</div>
+            <div class="time">5:00 PM – 7:15 PM</div>
+          </div>
+          <div class="sched-item">
+            <div class="name">AP Physics 1 (Tue)</div>
+            <div class="time">5:30 – 7:30 PM</div>
+          </div>
+          <div class="sched-item">
+            <div class="name">AP Chemistry (Wed)</div>
+            <div class="time">5:30 – 7:30 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 4: Next SAT -->
+  <section class="slide" data-slide="3">
+    <div class="slide-title">
+      <span class="tag">SAT</span>
+      <h1>Next SAT Test Date</h1>
+      <div class="accent"></div>
+    </div>
+    <div class="sat-wrap">
+      <div class="sat-main">
+        <div class="eyebrow">Countdown</div>
+        <div class="dday" id="satDdayBig">D-<span>-</span></div>
+        <div class="fulldate" id="satFullDate">-</div>
+      </div>
+      <div class="sat-next">
+        <h3>Upcoming Test Dates</h3>
+        <ul id="satFutureList"></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="dots" id="dots"></div>
+
+</div><!-- /#stage -->
+
+<script>
+/* ---------------- CLOCK ---------------- */
+const weekdays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+function pad(n){ return String(n).padStart(2,'0'); }
+function updateClock(){
+  const now = new Date();
+  document.getElementById('clockTime').textContent =
+    `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  document.getElementById('clockDate').textContent =
+    `${weekdays[now.getDay()]}, ${monthNames[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ---------------- WEEKLY VOCAB ---------------- */
+// 학원용 Vocab Test 교재의 페이지 진행 순서 (Google Drive 파일 목록 기준)
+const pageSequence = [6,9,12,15,24,27,30,33,42,45,48,51,60,63,66,69,78,81,84,87,96,99,102,105,114,117,120,123,132,135,138,141,150,153,156,159];
+const anchorIndex = 8; // p.42 위치 (2026-09-21 주)
+const anchorMonday = new Date(2026,8,21); // 2026-09-21 (월요일 확인됨)
+
+function getMondayOf(d){
+  const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const day = date.getDay();
+  const diff = (day===0) ? -6 : 1-day;
+  date.setDate(date.getDate()+diff);
+  return date;
+}
+function fmtRange(monday){
+  const saturday = new Date(monday);
+  saturday.setDate(monday.getDate()+5);
+  if(monday.getMonth()===saturday.getMonth()){
+    return `${monday.getMonth()+1}/${monday.getDate()}-${saturday.getDate()}`;
+  }
+  return `${monday.getMonth()+1}/${monday.getDate()}-${saturday.getMonth()+1}/${saturday.getDate()}`;
+}
+function pageForMonday(monday){
+  const diffDays = Math.round((monday - anchorMonday)/(1000*60*60*24));
+  const diffWeeks = Math.round(diffDays/7);
+  const idx = anchorIndex + diffWeeks;
+  return (idx>=0 && idx<pageSequence.length) ? pageSequence[idx] : null;
+}
+function isSameWeek(a,b){
+  return getMondayOf(a).getTime() === getMondayOf(b).getTime();
+}
+function updateVocab(){
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth(); // 0-indexed
+  document.getElementById('vocabMonthLabel').textContent = `${monthNames[month]} Vocab Schedule`;
+
+  const lastDay = new Date(year, month+1, 0);
+  let monday = getMondayOf(new Date(year, month, 1));
+  const weeks = [];
+  while(monday <= lastDay){
+    weeks.push(new Date(monday));
+    monday = new Date(monday);
+    monday.setDate(monday.getDate()+7);
+  }
+
+  const list = document.getElementById('vocabList');
+  list.innerHTML = '';
+  weeks.forEach(wk=>{
+    const page = pageForMonday(wk);
+    const row = document.createElement('div');
+    row.className = 'vocab-row' + (isSameWeek(wk,today) ? ' current' : '');
+    const pageLabel = page!==null ? `p.${page}` : 'TBD';
+    const badge = isSameWeek(wk,today) ? '<span class="badge">This Week</span>' : '';
+    row.innerHTML = `<div class="range">${fmtRange(wk)}</div><div class="right">${badge}<div class="page">${pageLabel}</div></div>`;
+    list.appendChild(row);
+  });
+}
+updateVocab();
+setInterval(updateVocab, 60*1000);
+
+/* ---------------- NEXT SAT ---------------- */
+const satDates = ['2026-10-03','2026-11-07','2026-12-05','2027-03-06','2027-05-01','2027-06-05'];
+function updateSat(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const upcoming = satDates.map(s=>new Date(s+'T00:00:00')).filter(d=>d>=today);
+  if(upcoming.length===0) return;
+  const next = upcoming[0];
+  const dday = Math.ceil((next-today)/(1000*60*60*24));
+  document.getElementById('satDdayBig').innerHTML = `D-<span>${dday}</span>`;
+  document.getElementById('satFullDate').textContent =
+    `${weekdays[next.getDay()]}, ${monthNames[next.getMonth()]} ${next.getDate()}, ${next.getFullYear()}`;
+  const list = document.getElementById('satFutureList');
+  list.innerHTML='';
+  upcoming.slice(1,4).forEach(d=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${d.getMonth()+1}/${d.getDate()}</span><span>D-${Math.ceil((d-today)/(1000*60*60*24))}</span>`;
+    list.appendChild(li);
+  });
+}
+updateSat();
+setInterval(updateSat, 60*60*1000);
+
+/* ---------------- SLIDE ROTATION ---------------- */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const dotsWrap = document.getElementById('dots');
+slides.forEach((s,i)=>{
+  const d = document.createElement('div');
+  d.className = 'dot'+(i===0?' active':'');
+  dotsWrap.appendChild(d);
+});
+const dots = Array.from(dotsWrap.children);
+let current = 0;
+const SLIDE_SECONDS = 12;
+function showSlide(i){
+  slides.forEach((s,idx)=>s.classList.toggle('active', idx===i));
+  dots.forEach((d,idx)=>d.classList.toggle('active', idx===i));
+  current = i;
+}
+showSlide(0);
+setInterval(()=>{ showSlide((current+1)%slides.length); }, SLIDE_SECONDS*1000);
+
+/* ---------------- SCALE STAGE TO FIT SCREEN (keeps 16:9 ratio on any TV) ---------------- */
+const stage = document.getElementById('stage');
+function fitStage(){
+  const scale = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+  stage.style.transform = `translate(-50%,-50%) scale(${scale})`;
+  stage.style.position = 'absolute';
+  stage.style.top = '50%';
+  stage.style.left = '50%';
+}
+window.addEventListener('resize', fitStage);
+window.addEventListener('orientationchange', fitStage);
+fitStage();
+</script>
+</body>
+</html>
