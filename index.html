@@ -694,7 +694,12 @@ const satDates = ['2026-10-03','2026-11-07','2026-12-05','2027-03-06','2027-05-0
 function updateSat(){
   const today = new Date(); today.setHours(0,0,0,0);
   const upcoming = satDates.map(s=>new Date(s+'T00:00:00')).filter(d=>d>=today);
-  if(upcoming.length===0) return;
+  if(upcoming.length===0){
+    document.getElementById('satDdayBig').textContent = 'D-Day';
+    document.getElementById('satFullDate').textContent = '';
+    document.getElementById('satFutureList').innerHTML = '';
+    return;
+  }
   const next = upcoming[0];
   const dday = Math.ceil((next-today)/(1000*60*60*24));
   document.getElementById('satDdayBig').innerHTML = `D-<span>${dday}</span>`;
