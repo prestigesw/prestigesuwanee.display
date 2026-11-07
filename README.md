@@ -12,4 +12,4 @@ Visit the [official Prestige Institute website](https://www.prestigei.com) to fi
 
 ## How to display the signage
 
-Start at the main page of the repository, then locate the settings tab in the top bar. Once found, locate the pages section on the right side. When on the tab, locate the button that read "Visit the Site" and it will take you to an external URL that will display the HTML file. The [website can be found here for convenience](https://prestigesw.github.io/prestigesuwanee.display/).
+Start at the main page of the repository, then locate the settings tab in the top bar. Once found, locate the pages section on the right side. When on the tab, locate the button that read "Visit the Site" and it will take you to an external URL that will display the HTML file. The [digital signage URL can be found here for convenience](https://prestigesw.github.io/prestigesuwanee.display/).
