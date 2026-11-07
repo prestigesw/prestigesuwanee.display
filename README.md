@@ -2,7 +2,7 @@
   <img src="branding/prestigewhite.png" width="500">
 </p>
 
-# Prestige Institute Digital Signage
+# Prestige Institute Suwanee, GA Digital Signage
 
 This repository contains the contents of a personalized digital signage for Prestige Institute's Suwanee location. Written entirely in an HTML file, this code runs locally on a browser to display information.
 
