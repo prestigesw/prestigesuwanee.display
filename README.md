@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="branding/channels4_profile.jpg" width="250">
+  <img src="branding/prestigewhite.png" width="500">
 </p>
 
 # Prestige Institute Digital Signage
@@ -9,3 +9,5 @@ This repository contains the contents of a personalized digital signage for Pres
 This is not officially affiliated with the Prestige Institute brand, rather a specific fork for the Suwanee, GA branch.
 
 Visit the [official Prestige Institute website](https://www.prestigei.com) to find more information on SAT and ACT tutoring and aid.
+
+## How to display the signage
