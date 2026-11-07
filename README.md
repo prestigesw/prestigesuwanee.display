@@ -11,3 +11,5 @@ This is not officially affiliated with the Prestige Institute brand, rather a sp
 Visit the [official Prestige Institute website](https://www.prestigei.com) to find more information on SAT and ACT tutoring and aid.
 
 ## How to display the signage
+
+Start at the main page of the repository, then locate the settings tab in the top bar. Once found, locate the pages section on the right side. 
