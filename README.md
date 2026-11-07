@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=" width="600">
+  <img src="branding/channels4_profile.jpg" width="250">
 </p>
 
 # Prestige Institute Digital Signage
